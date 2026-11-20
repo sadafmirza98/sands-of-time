@@ -75,7 +75,9 @@ type Anim = { stop: () => void };
 
 export function OpeningOverlay() {
   const reduced = useReducedMotion();
-  const musicActive = useMusicStatus() !== "idle";
+  const musicStatus = useMusicStatus();
+  // The music card only appears when the browser needs one tap on the player.
+  const musicActive = musicStatus === "blocked" || musicStatus === "error";
   const [phase, setPhase] = useState<Phase>(reduced ? Phase.Await : Phase.Dark);
   const [leaving, setLeaving] = useState<null | "skip" | "enter">(null);
   const letterRef = useRef<HTMLDivElement | null>(null);

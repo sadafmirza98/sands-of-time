@@ -214,7 +214,7 @@ The Leaflet map (lazy, client-only, OSM tiles with a warm restrained filter, cus
 
 ## Music
 
-`wedding.music` starts **only from a guest's tap** — breaking the envelope's seal, or the music button (nav / opening controls) — never on load, with a 1.6 s fade in/out. The player is built (paused, hidden) in advance so the tap can start it instantly. YouTube tracks use the official IFrame Player API inside a small visible "music box" card (bottom-left, 200×200 player): YouTube's developer policies don't allow hidden, audio-only playback. Nothing is downloaded or re-hosted. Some mobile browsers refuse to start sound until the player itself is tapped; the card then says *"Tap play on the player"*. A local/hosted file works too: `{ kind: "audio", src: "/audio/track.mp3", title, volume }`.
+`wedding.music` starts **only from a guest's tap** — breaking the envelope's seal, or the music button (nav / opening controls) — never on load, with a 1.6 s fade in/out. The player is built (paused, hidden) in advance so the tap can start it instantly. YouTube tracks use the official IFrame Player API with the player mounted but invisible (audio only, by the family's choice — note that YouTube's developer policies ask for a visible player, so YouTube could restrict this). Nothing is downloaded or re-hosted. If a browser (some iPhones) refuses to start sound from a tap on the page, a small card appears with the player so the guest can tap ▶ once; it hides again as soon as the music plays. A local/hosted file works too: `{ kind: "audio", src: "/audio/track.mp3", title, volume }`.
 
 ## 14. Accessibility
 

@@ -37,8 +37,10 @@ export function MusicToggle({ className }: { className?: string }) {
 }
 
 /**
- * The "music box": a small card holding YouTube's visible embedded player while
- * music is active. Rendered once in the root layout, above the opening overlay.
+ * Hosts the YouTube player. Audio only: the player is mounted but fully
+ * transparent and non-interactive. The card is shown ONLY if the browser refuses
+ * to start sound from a tap on the page (some iPhones) — the guest taps ▶ once
+ * and the card hides again as soon as the music plays — or if the video fails.
  */
 export function MusicHost() {
   const status = useMusicStatus();
@@ -48,7 +50,7 @@ export function MusicHost() {
     return () => window.clearTimeout(t);
   }, []);
   if (!wedding.music || wedding.music.kind !== "youtube") return null;
-  const visible = status !== "idle";
+  const visible = status === "blocked" || status === "error";
 
   return (
     <motion.aside
@@ -69,18 +71,18 @@ export function MusicHost() {
           <button
             type="button"
             onClick={stopMusic}
-            aria-label="Close music player"
+            aria-label="Dismiss music"
             className="inline-flex size-7 shrink-0 items-center justify-center rounded-full border border-gold/40 text-gold-bright hover:border-gold-bright"
           >
             <X aria-hidden className="size-3.5" />
           </button>
         </div>
-        {/* YouTube mounts its iframe in here (kept ≥ 200×200 per YouTube's player policy). */}
+        {/* YouTube mounts its iframe in here. */}
         <div ref={hostRef} className="size-[200px] overflow-hidden rounded-lg bg-black/60 [&>iframe]:size-full" />
         <AnimatePresence>
           {status === "blocked" && (
             <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="mt-2 text-center text-sm italic text-sand">
-              Tap play on the player to start the music.
+              Tap ▶ once to start the music.
             </motion.p>
           )}
           {status === "error" && (
