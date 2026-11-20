@@ -66,7 +66,7 @@ src/
   lib/
     timezone.ts         IANA wall-clock → UTC (no deps)
     dates.ts            event instant, formatters, month grid, weekday guard
-    calendar.ts         Google Calendar URL + RFC 5545 ICS
+    calendar.ts         Google Calendar URL
     maps.ts             Google Maps search / directions, OSM links
     contacts.ts         tel: and WhatsApp links
     formatting.ts       names, venue line, helpers
@@ -197,7 +197,6 @@ The event is authored as wall-clock time in `Asia/Kolkata`. `src/lib/timezone.ts
 - Countdown: `targetUtc − Date.now()`; the visitor's zone is irrelevant (verified with the browser forced to `America/Los_Angeles`).
 - Display strings are built from the authored parts, never from the visitor's locale, so server and client render identically.
 - Google Calendar: `dates=20261219T133000Z/20261219T133000Z&ctz=Asia/Kolkata`. Google requires an end, so start = end (zero duration) rather than an invented one.
-- ICS: `DTSTART:20261219T133000Z` with **no** `DTEND`/`DURATION` — per RFC 5545 that's a zero-duration start marker ("7 PM onwards").
 - Nothing time-dependent is prerendered (the clock's server snapshot is `null`), which also satisfies Cache Components.
 
 ## 13. Map coordinates
@@ -247,6 +246,6 @@ The Leaflet map (lazy, client-only, OSM tiles with a warm restrained filter, cus
 - Venue coordinates come from the OSM building, compared visually (not numerically) with the Google place (see §13).
 - The configured YouTube track is a third-party upload; it can be removed or region-blocked by YouTube at any time, may show ads, and its thumbnail is chosen by the uploader.
 - Story, verse, hashtag, RSVP and developer credit not supplied → hidden / "To be announced" by design.
-- The ICS/Google entry has no end time by design; some calendar apps display zero-duration events as a point in time.
+- The Google Calendar entry has no end time by design (zero-duration start marker). The .ics download was removed at the family's request.
 - OSM's public tile server is meant for light use; for heavy traffic switch to a commercial tile provider in `VenueMap.tsx`.
 - Tested in headless Chrome only (360 / 768 / 1440 px); not tested on physical iOS Safari / Android devices.

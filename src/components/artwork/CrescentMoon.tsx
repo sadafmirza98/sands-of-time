@@ -23,7 +23,7 @@ export function CrescentMoon({ className }: { className?: string }) {
           <circle cx="116" cy="88" r="30" fill="#000" />
         </mask>
       </defs>
-      <circle cx="100" cy="100" r="100" fill={`url(#${id}h)`} className="breathe" />
+      <circle cx="100" cy="100" r="100" fill={`url(#${id}h)`} />
       <rect width="200" height="200" fill={`url(#${id}m)`} mask={`url(#${id}c)`} />
     </svg>
   );

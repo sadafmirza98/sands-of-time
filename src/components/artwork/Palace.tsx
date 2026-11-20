@@ -68,7 +68,7 @@ export function PalaceFar({ className }: LayerProps) {
         <rect x="1470" y="600" width="10" height="220" />
         <path d={onionDomePath(1475, 602, 9)} />
       </g>
-      <g fill="#E2BC73" opacity="0.7" className="flicker">
+      <g fill="#E2BC73" opacity="0.7">
         <rect x="195" y="740" width="5" height="9" rx="2.5" />
         <rect x="235" y="740" width="5" height="9" rx="2.5" />
         <rect x="1360" y="730" width="5" height="9" rx="2.5" />
@@ -102,7 +102,7 @@ function Arcade({ x0, count, w, gap, base, spring, apex, glow, glowId, darkId }:
         return (
           <g key={i}>
             <path d={archPath(c, base, w, spring, apex)} fill={`url(#${darkId})`} />
-            {lit && <path d={archPath(c, base, w * 0.62, spring + (base - spring) * 0.12, apex + (spring - apex) * 0.55)} fill={`url(#${glowId})`} className={i % 2 ? "flicker" : "flicker-slow"} />}
+            {lit && <path d={archPath(c, base, w * 0.62, spring + (base - spring) * 0.12, apex + (spring - apex) * 0.55)} fill={`url(#${glowId})`} />}
             <path d={archPath(c, base, w, spring, apex, false)} fill="none" stroke="#C49A4A" strokeOpacity="0.55" strokeWidth="1.4" />
           </g>
         );
@@ -192,7 +192,7 @@ export function PalaceMain({ className, tone = "night", ground = true }: LayerPr
       <g>
         <rect x="684" y="236" width="232" height="70" fill={`url(#${stone})`} />
         {Array.from({ length: 7 }, (_, i) => (
-          <path key={i} d={archPath(706 + i * 31.5, 296, 14, 266, 250)} fill={`url(#${winGlow})`} opacity="0.85" className={i % 3 === 0 ? "flicker" : undefined} />
+          <path key={i} d={archPath(706 + i * 31.5, 296, 14, 266, 250)} fill={`url(#${winGlow})`} opacity="0.85" />
         ))}
         <rect x="678" y="230" width="244" height="8" fill={`url(#${gold})`} opacity="0.8" />
         <path d={domePath(800, 232, 122, 1.52)} fill={`url(#${domeFill})`} />
@@ -261,13 +261,13 @@ export function PalaceMain({ className, tone = "night", ground = true }: LayerPr
           <path d={`M${m - 30} 252 H${m + 30} L${m + 22} 264 H${m - 22} Z`} fill={`url(#${stone})`} stroke="#C49A4A" strokeOpacity="0.6" />
           <path d={`M${m - 30} 252 H${m + 30}`} stroke="#E2BC73" strokeWidth="1.6" />
           <rect x={m - 11} y="176" width="22" height="76" fill={`url(#${stone})`} />
-          <path d={archPath(m, 238, 9, 206, 194)} fill={`url(#${winGlow})`} className="flicker-slow" />
+          <path d={archPath(m, 238, 9, 206, 194)} fill={`url(#${winGlow})`} />
           <rect x={m - 15} y="172" width="30" height="5" fill="#C49A4A" />
           <path d={onionDomePath(m, 173, 15)} fill={`url(#${domeFill})`} />
           <line x1={m} y1={141} x2={m} y2={112} stroke="#E2BC73" strokeWidth="1.8" />
           <circle cx={m} cy={124} r="3" fill="#E2BC73" />
           <path d={archPath(m, 455, 8, 432, 420)} fill={`url(#${winGlow})`} opacity="0.75" />
-          <path d={archPath(m, 625, 8, 602, 590)} fill={`url(#${winGlow})`} opacity="0.75" className="flicker" />
+          <path d={archPath(m, 625, 8, 602, 590)} fill={`url(#${winGlow})`} opacity="0.75" />
         </g>
       ))}
 
@@ -311,10 +311,10 @@ export function PalaceMain({ className, tone = "night", ground = true }: LayerPr
               );
             });
           })}
-          <rect x="680" y="560" width="240" height="300" fill={`url(#${glow})`} className="breathe-slow" />
+          <rect x="680" y="560" width="240" height="300" fill={`url(#${glow})`} />
           {/* inner doorway pouring light */}
           <path d={archPath(800, GROUND, 104, 752, 676)} fill={`url(#${winGlow})`} opacity="0.95" />
-          <path d={archPath(800, GROUND, 82, 760, 696)} fill="#FFF3CF" opacity="0.65" className="flicker-slow" />
+          <path d={archPath(800, GROUND, 82, 760, 696)} fill="#FFF3CF" opacity="0.65" />
           <path d={`M748 ${GROUND} L852 ${GROUND} L930 ${GROUND + 40} L670 ${GROUND + 40} Z`} fill="#FFE6A8" opacity="0.25" />
         </g>
         <path d={cuspedArchPath(800, GROUND, 214, 560, 384, 9)} fill="none" stroke="#E2BC73" strokeOpacity="0.55" strokeWidth="1.2" />

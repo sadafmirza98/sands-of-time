@@ -51,7 +51,7 @@ export function HourglassFrame({ className, children }: { className?: string; ch
           <path d={BOTTOM_BULB} />
         </clipPath>
       </defs>
-      <ellipse cx="100" cy="160" rx="120" ry="150" fill={`url(#${id}halo)`} className="breathe" />
+      <ellipse cx="100" cy="160" rx="120" ry="150" fill={`url(#${id}halo)`} />
 
       {/* back pillar */}
       <rect x="97" y="34" width="6" height="252" fill="#3d2b0c" opacity="0.18" />

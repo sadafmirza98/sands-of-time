@@ -8,13 +8,13 @@ export function Lantern({ className, chain = 120, delay = 0 }: { className?: str
   const top = chain;
   return (
     <div aria-hidden className={cx("lantern-sway pointer-events-none origin-top", className)} style={{ animationDelay: `${delay}s` }}>
-      <svg viewBox={`0 0 120 ${top + 230}`} className="h-full w-auto overflow-visible">
+      {/* glow: a GPU-composited layer, so its flicker never repaints the lantern art */}
+      <div
+        className="flicker absolute aspect-square w-[183%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(closest-side,rgb(255_227_160/0.75),rgb(226_188_115/0.25)_40%,transparent)]"
+        style={{ left: "50%", top: `${((top + 110) / (top + 230)) * 100}%`, animationDelay: `${delay * 0.7}s` }}
+      />
+      <svg viewBox={`0 0 120 ${top + 230}`} className="relative h-full w-auto overflow-visible">
         <defs>
-          <radialGradient id={`${id}glow`} cx="50%" cy="50%" r="50%">
-            <stop offset="0" stopColor="#FFE3A0" stopOpacity="0.75" />
-            <stop offset="0.4" stopColor="#E2BC73" stopOpacity="0.25" />
-            <stop offset="1" stopColor="#E2BC73" stopOpacity="0" />
-          </radialGradient>
           <linearGradient id={`${id}brass`} x1="0" y1="0" x2="1" y2="0">
             <stop offset="0" stopColor="#6e4f17" />
             <stop offset="0.45" stopColor="#E2BC73" />
@@ -26,14 +26,13 @@ export function Lantern({ className, chain = 120, delay = 0 }: { className?: str
             <stop offset="1" stopColor="#F0B95A" />
           </linearGradient>
         </defs>
-        <circle cx="60" cy={top + 110} r="110" fill={`url(#${id}glow)`} className="flicker" style={{ animationDelay: `${delay * 0.7}s` }} />
         <line x1="60" y1="0" x2="60" y2={top} stroke="#8a6526" strokeWidth="2" strokeDasharray="5 3" />
         {/* cap */}
         <circle cx="60" cy={top + 4} r="5" fill="none" stroke={`url(#${id}brass)`} strokeWidth="2.5" />
         <path d={`M60 ${top + 9} C40 ${top + 26} 30 ${top + 40} 26 ${top + 52} H94 C90 ${top + 40} 80 ${top + 26} 60 ${top + 9} Z`} fill={`url(#${id}brass)`} />
         <rect x="22" y={top + 52} width="76" height="8" rx="2" fill={`url(#${id}brass)`} />
         {/* glass body with lattice */}
-        <path d={`M28 ${top + 60} H92 L100 ${top + 120} L84 ${top + 178} H36 L20 ${top + 120} Z`} fill={`url(#${id}flame)`} opacity="0.9" className="flicker-slow" />
+        <path d={`M28 ${top + 60} H92 L100 ${top + 120} L84 ${top + 178} H36 L20 ${top + 120} Z`} fill={`url(#${id}flame)`} opacity="0.9" />
         <g stroke={`url(#${id}brass)`} strokeWidth="2.6" fill="none">
           <path d={`M28 ${top + 60} H92 L100 ${top + 120} L84 ${top + 178} H36 L20 ${top + 120} Z`} />
           <path d={`M60 ${top + 60} V${top + 178} M20 ${top + 120} H100`} />

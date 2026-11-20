@@ -146,6 +146,16 @@ html[data-opening="skip"] [data-opening-cover] {
 .twinkle-1 { animation-duration: 3.2s; }
 .twinkle-2 { animation-duration: 6.4s; }
 
+/* Whole star layers twinkle — opacity on a div is composited (no repaint). */
+@keyframes twinkle-layer {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.38; }
+}
+.twinkle-layer { animation: twinkle-layer 5.2s ease-in-out infinite; will-change: opacity; }
+.twinkle-layer-0 { animation-duration: 3.6s; }
+.twinkle-layer-1 { animation-duration: 5.4s; animation-delay: -1.7s; }
+.twinkle-layer-2 { animation-duration: 7.8s; animation-delay: -3.9s; }
+
 /* Gentle candle glow — smooth easing only (stepped opacity reads as a glitch). */
 @keyframes flicker {
   0%, 100% { opacity: 1; }
@@ -170,7 +180,7 @@ html[data-opening="skip"] [data-opening-cover] {
   0%, 100% { transform: rotate(-1.6deg); }
   50% { transform: rotate(1.6deg); }
 }
-.lantern-sway { animation: sway 6s ease-in-out infinite; }
+.lantern-sway { animation: sway 6s ease-in-out infinite; will-change: transform; }
 
 @keyframes spin { to { transform: rotate(360deg); } }
 .spin-slow { animation: spin 140s linear infinite; }
@@ -185,7 +195,11 @@ html[data-opening="skip"] [data-opening-cover] {
   0% { background-position: 100% 0; }
   100% { background-position: -20% 0; }
 }
-.shimmer { animation: shimmer 7s ease-in-out infinite alternate; }
+/* Animating background-position repaints the text every frame, so the shimmer
+   runs only on large, hover-capable screens (static gold elsewhere). */
+@media (hover: hover) and (min-width: 1024px) {
+  .shimmer { animation: shimmer 7s ease-in-out infinite alternate; }
+}
 
 @keyframes camera-drift {
   0% { transform: scale(1) translate3d(0, 0, 0); }

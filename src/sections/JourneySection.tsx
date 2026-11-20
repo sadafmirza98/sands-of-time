@@ -4,7 +4,7 @@ import { motion, type MotionValue, useMotionValue, useScroll, useTransform } fro
 import { useId, useRef } from "react";
 import { wedding } from "@/config/wedding";
 import { CrescentMoon } from "@/components/artwork/CrescentMoon";
-import { archPath, starPoints } from "@/components/artwork/geometry";
+import { archPath, domePath, starPoints } from "@/components/artwork/geometry";
 import { Hourglass } from "@/components/artwork/Hourglass";
 import { PalaceMain } from "@/components/artwork/Palace";
 import { Starfield } from "@/components/artwork/Starfield";
@@ -60,6 +60,58 @@ function RuinedGate({ className }: { className?: string }) {
   );
 }
 
+/** The grand, intact gate you walk straight through before the palace. */
+function GrandGate({ className }: { className?: string }) {
+  const id = useId();
+  const outer = archPath(200, 520, 300, 230, 60);
+  const inner = archPath(200, 520, 200, 260, 120);
+  return (
+    <svg aria-hidden viewBox="0 0 400 520" className={className}>
+      <defs>
+        <linearGradient id={`${id}s`} x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stopColor="#0a1a38" />
+          <stop offset="0.55" stopColor="#183463" />
+          <stop offset="1" stopColor="#0d2145" />
+        </linearGradient>
+        <pattern id={`${id}t`} width="20" height="20" patternUnits="userSpaceOnUse">
+          <rect width="20" height="20" fill="#11504f" />
+          <polygon points={starPoints(10, 10, 8.5, 4)} fill="none" stroke="#E2BC73" strokeOpacity="0.6" strokeWidth="0.8" />
+          <circle cx="10" cy="10" r="1.6" fill="#E2BC73" />
+        </pattern>
+        <radialGradient id={`${id}g`} cx="50%" cy="85%" r="70%">
+          <stop offset="0" stopColor="#FFE6A8" stopOpacity="0.55" />
+          <stop offset="1" stopColor="#E2BC73" stopOpacity="0" />
+        </radialGradient>
+      </defs>
+      {/* side towers with small domes */}
+      {[34, 366].map((x) => (
+        <g key={x}>
+          <rect x={x - 26} y="150" width="52" height="370" fill={`url(#${id}s)`} stroke="#C49A4A" strokeOpacity="0.5" />
+          <rect x={x - 28} y="210" width="56" height="10" fill={`url(#${id}t)`} />
+          <rect x={x - 28} y="380" width="56" height="10" fill={`url(#${id}t)`} />
+          <path d={domePath(x, 152, 26, 1.5)} fill="#1c7476" stroke="#E2BC73" strokeOpacity="0.6" />
+          <line x1={x} y1="113" x2={x} y2="96" stroke="#E2BC73" strokeWidth="2" />
+          <circle cx={x} cy="104" r="3" fill="#E2BC73" />
+          <path d={archPath(x, 330, 16, 300, 286)} fill="#E2BC73" opacity="0.7" />
+        </g>
+      ))}
+      {/* pishtaq frame with a turquoise tile band and an open arch */}
+      <path fillRule="evenodd" d={`M60 40 H340 V520 H60 Z ${inner}`} fill={`url(#${id}s)`} />
+      <path fillRule="evenodd" d={`M74 54 H326 V520 H74 Z M90 70 H310 V520 H90 Z`} fill={`url(#${id}t)`} />
+      <rect x="60" y="40" width="280" height="480" fill="none" stroke="#E2BC73" strokeOpacity="0.8" strokeWidth="2" />
+      <path d={inner} fill={`url(#${id}g)`} />
+      <path d={archPath(200, 520, 200, 260, 120, false)} fill="none" stroke="#E2BC73" strokeWidth="3" />
+      <path d={archPath(200, 520, 214, 256, 108, false)} fill="none" stroke="#E2BC73" strokeOpacity="0.45" strokeWidth="1.5" />
+      <path d={outer} fill="none" stroke="#C49A4A" strokeOpacity="0.25" />
+      {[120, 280].map((x) => (
+        <polygon key={x} points={starPoints(x, 96, 14, 6.5)} fill="#0a1a38" stroke="#E2BC73" strokeWidth="1.2" />
+      ))}
+      <polygon points={starPoints(200, 22, 14, 6)} fill="#E2BC73" />
+      <path d="M40 505 Q120 480 200 498 T360 492 V520 H40 Z" fill="#8d7350" opacity="0.7" />
+    </svg>
+  );
+}
+
 /* ── the scene, driven by a 0→1 progress value ───────────────────────────── */
 
 function Caption({ p, range, text, index }: { p: MotionValue<number>; range: [number, number]; text: string; index: number }) {
@@ -91,6 +143,9 @@ function Scene({ p, interactive }: { p: MotionValue<number>; interactive: boolea
   const gate2Scale = useTransform(p, [0.3, 0.7], [0.35, 2.4]);
   const gate2X = useTransform(p, [0.3, 0.7], ["10%", "120%"]);
   const gate2O = useTransform(p, [0.3, 0.38, 0.6, 0.7], [0, 1, 1, 0]);
+  // third, grand gate — straight ahead, we walk through it just before the palace
+  const gate3Scale = useTransform(p, [0.5, 0.84], [0.32, 3.1]);
+  const gate3O = useTransform(p, [0.5, 0.58, 0.74, 0.84], [0, 1, 1, 0]);
   const ticketO = useTransform(p, [0.8, 0.9], [0, 1]);
   const ticketS = useTransform(p, [0.8, 0.95], [0.86, 1]);
   const ticketY = useTransform(p, [0.8, 0.95], [50, 0]);
@@ -115,11 +170,11 @@ function Scene({ p, interactive }: { p: MotionValue<number>; interactive: boolea
       </motion.div>
 
       {/* distant palace on the horizon */}
-      <motion.div className="absolute bottom-[27%] left-1/2 aspect-[1.6] w-[150vh] max-w-[220vw] -translate-x-1/2 origin-bottom" style={{ scale: palaceScale, opacity: palaceO }}>
+      <motion.div className="absolute bottom-[27%] left-1/2 aspect-[1.6] w-[150vh] max-w-[220vw] -translate-x-1/2 origin-bottom will-change-transform" style={{ scale: palaceScale, opacity: palaceO }}>
         <PalaceMain tone="glow" ground={false} />
       </motion.div>
 
-      <motion.div className="absolute bottom-0 left-0 h-[46%] w-[300%]" style={{ x: farX }}>
+      <motion.div className="absolute bottom-0 left-0 h-[46%] w-[300%] will-change-transform" style={{ x: farX }}>
         <DuneBand d={FAR_DUNES} fill="#1a2c4c" highlight="#6b5a48" />
       </motion.div>
 
@@ -127,11 +182,14 @@ function Scene({ p, interactive }: { p: MotionValue<number>; interactive: boolea
       <SandField mode="rise" density={1.2} max={150} speed={0.8} />
 
       {/* ruined gates we pass through */}
-      <motion.div className="absolute bottom-[18%] left-1/2 h-[34%] origin-bottom" style={{ scale: gate1Scale, x: gate1X, opacity: gate1O }}>
+      <motion.div className="absolute bottom-[18%] left-1/2 h-[34%] origin-bottom will-change-transform" style={{ scale: gate1Scale, x: gate1X, opacity: gate1O }}>
         <RuinedGate className="h-full w-auto -translate-x-1/2" />
       </motion.div>
-      <motion.div className="absolute bottom-[18%] left-1/2 h-[30%] origin-bottom" style={{ scale: gate2Scale, x: gate2X, opacity: gate2O }}>
+      <motion.div className="absolute bottom-[18%] left-1/2 h-[30%] origin-bottom will-change-transform" style={{ scale: gate2Scale, x: gate2X, opacity: gate2O }}>
         <RuinedGate className="h-full w-auto -translate-x-1/2" />
+      </motion.div>
+      <motion.div className="absolute bottom-[16%] left-1/2 h-[36%] -translate-x-1/2 origin-bottom will-change-transform" style={{ scale: gate3Scale, opacity: gate3O }}>
+        <GrandGate className="h-full w-auto" />
       </motion.div>
 
       {/* the luminous path */}
@@ -161,7 +219,7 @@ function Scene({ p, interactive }: { p: MotionValue<number>; interactive: boolea
         />
       </svg>
 
-      <motion.div className="absolute bottom-0 left-0 h-[24%] w-[300%]" style={{ x: nearX }}>
+      <motion.div className="absolute bottom-0 left-0 h-[24%] w-[300%] will-change-transform" style={{ x: nearX }}>
         <DuneBand d={NEAR_DUNES} fill="#2a2638" highlight="#D9BD91" />
       </motion.div>
       <div className="absolute inset-0 bg-[radial-gradient(80%_70%_at_50%_45%,transparent_45%,rgb(3_8_20/0.7)_100%)]" />

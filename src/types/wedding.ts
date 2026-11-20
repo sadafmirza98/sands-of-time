@@ -186,7 +186,6 @@ export interface CopyConfig {
     actions: {
       maps: string;
       googleCalendar: string;
-      ics: string;
       call: string;
       whatsapp: string;
     };

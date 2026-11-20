@@ -13,7 +13,7 @@ import { ARRIVE_EVENT } from "@/components/invitation/OpeningOverlay";
 import { SandField } from "@/components/magical/SandField";
 import { HiddenPassage } from "@/components/secrets/HiddenPassage";
 import { RoyalButton } from "@/components/ui/RoyalButton";
-import { useFinePointer, useReducedMotion } from "@/hooks/useReducedMotion";
+import { useCoarsePointer, useFinePointer, useReducedMotion } from "@/hooks/useReducedMotion";
 import { eventLongDate } from "@/lib/dates";
 
 const { hero } = wedding.copy;
@@ -29,6 +29,8 @@ export function HeroSection() {
   const ref = useRef<HTMLElement | null>(null);
   const reduced = useReducedMotion();
   const fine = useFinePointer();
+  // A full-scene blur is expensive on phones; there the arrival is a scale-only push.
+  const coarse = useCoarsePointer();
   const [arrival, setArrival] = useState(0);
 
   // scroll parallax
@@ -84,7 +86,7 @@ export function HeroSection() {
 
   return (
     <section ref={ref} id="home" aria-labelledby="hero-title" className="relative h-[100svh] min-h-[640px] overflow-hidden bg-midnight">
-      <motion.div className="absolute inset-0 origin-[50%_60%]" style={{ scale: arriveScale, filter: arriveBlur }}>
+      <motion.div className="absolute inset-0 origin-[50%_60%]" style={{ scale: arriveScale, filter: coarse ? undefined : arriveBlur }}>
         <div className="camera-drift absolute inset-0 origin-[50%_70%]">
           <div className="absolute inset-0 bg-[linear-gradient(180deg,#040c1f_0%,#07152f_30%,#0d2145_60%,#173b69_82%,#2b3f5e_100%)]" />
           <div className="sky-shift absolute inset-0 bg-[radial-gradient(70%_45%_at_50%_78%,rgb(226_188_115/0.28),transparent_70%)]" />
@@ -95,8 +97,10 @@ export function HeroSection() {
           <motion.div className="absolute inset-0" style={{ y: farY, x: farX }}>
             <PalaceFar />
           </motion.div>
-          <motion.div className="absolute inset-0" style={{ y: mainY, x: mainX, rotateX: tiltY }}>
+          <motion.div className="absolute inset-0 will-change-transform" style={{ y: mainY, x: mainX, rotateX: tiltY }}>
             <PalaceMain />
+            {/* candle-light breathing in the great gate — a composited layer, not SVG animation */}
+            <div className="flicker-slow absolute inset-0 bg-[radial-gradient(9%_15%_at_50%_80%,rgb(255_230_168/0.35),transparent_100%)]" />
           </motion.div>
           <SandField mode="swirl" origin={[0.5, 0.62]} density={1.6} max={200} speed={0.9} />
           <motion.div className="absolute inset-0" style={{ y: mainY }}>

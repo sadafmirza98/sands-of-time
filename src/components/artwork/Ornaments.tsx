@@ -70,32 +70,43 @@ export function MonogramInsignia({ monogram, className }: { monogram: string; cl
   );
 }
 
-/** Concentric astrolabe-like rings — the "ancient mechanism". Pure CSS rotation. */
+/**
+ * Concentric astrolabe-like rings — the "ancient mechanism". Each ring is its
+ * own SVG in a div that rotates with CSS, so the GPU spins the layers without
+ * repainting them (rotating SVG groups forced a full repaint every frame).
+ */
 export function Mechanism({ className }: { className?: string }) {
   const ticks = Array.from({ length: 72 }, (_, i) => i);
+  const layer = "absolute inset-0 will-change-transform";
   return (
-    <svg aria-hidden viewBox="0 0 600 600" className={cx("pointer-events-none", className)}>
-      <g className="spin-slow" style={{ transformOrigin: "300px 300px" }}>
-        <circle cx="300" cy="300" r="292" fill="none" stroke="#C49A4A" strokeOpacity="0.5" strokeWidth="1" />
-        <circle cx="300" cy="300" r="276" fill="none" stroke="#C49A4A" strokeOpacity="0.35" strokeWidth="1" />
-        {ticks.map((i) => {
-          const a = (i / 72) * Math.PI * 2;
-          const r0 = i % 6 === 0 ? 262 : 270;
-          return <line key={i} x1={r2(300 + Math.cos(a) * r0)} y1={r2(300 + Math.sin(a) * r0)} x2={r2(300 + Math.cos(a) * 276)} y2={r2(300 + Math.sin(a) * 276)} stroke="#E2BC73" strokeOpacity="0.55" strokeWidth={i % 6 === 0 ? 1.6 : 0.8} />;
-        })}
-      </g>
-      <g className="spin-reverse" style={{ transformOrigin: "300px 300px" }}>
-        <circle cx="300" cy="300" r="232" fill="none" stroke="#E2BC73" strokeOpacity="0.3" strokeDasharray="2 10" strokeWidth="2" />
-        {Array.from({ length: 12 }, (_, i) => {
-          const a = (i / 12) * Math.PI * 2;
-          return <polygon key={i} points={starPoints(300 + Math.cos(a) * 232, 300 + Math.sin(a) * 232, 9, 4)} fill="#E2BC73" fillOpacity="0.55" />;
-        })}
-      </g>
-      <g className="spin-slower" style={{ transformOrigin: "300px 300px" }}>
-        <polygon points={starPoints(300, 300, 196, 150, 12)} fill="none" stroke="#258F91" strokeOpacity="0.45" strokeWidth="1" />
-        <circle cx="300" cy="300" r="150" fill="none" stroke="#C49A4A" strokeOpacity="0.25" />
-      </g>
-    </svg>
+    <div aria-hidden className={cx("pointer-events-none relative", className)}>
+      <div className={cx(layer, "spin-slow")}>
+        <svg viewBox="0 0 600 600" className="size-full">
+          <circle cx="300" cy="300" r="292" fill="none" stroke="#C49A4A" strokeOpacity="0.5" strokeWidth="1" />
+          <circle cx="300" cy="300" r="276" fill="none" stroke="#C49A4A" strokeOpacity="0.35" strokeWidth="1" />
+          {ticks.map((i) => {
+            const a = (i / 72) * Math.PI * 2;
+            const r0 = i % 6 === 0 ? 262 : 270;
+            return <line key={i} x1={r2(300 + Math.cos(a) * r0)} y1={r2(300 + Math.sin(a) * r0)} x2={r2(300 + Math.cos(a) * 276)} y2={r2(300 + Math.sin(a) * 276)} stroke="#E2BC73" strokeOpacity="0.55" strokeWidth={i % 6 === 0 ? 1.6 : 0.8} />;
+          })}
+        </svg>
+      </div>
+      <div className={cx(layer, "spin-reverse")}>
+        <svg viewBox="0 0 600 600" className="size-full">
+          <circle cx="300" cy="300" r="232" fill="none" stroke="#E2BC73" strokeOpacity="0.3" strokeDasharray="2 10" strokeWidth="2" />
+          {Array.from({ length: 12 }, (_, i) => {
+            const a = (i / 12) * Math.PI * 2;
+            return <polygon key={i} points={starPoints(300 + Math.cos(a) * 232, 300 + Math.sin(a) * 232, 9, 4)} fill="#E2BC73" fillOpacity="0.55" />;
+          })}
+        </svg>
+      </div>
+      <div className={cx(layer, "spin-slower")}>
+        <svg viewBox="0 0 600 600" className="size-full">
+          <polygon points={starPoints(300, 300, 196, 150, 12)} fill="none" stroke="#258F91" strokeOpacity="0.45" strokeWidth="1" />
+          <circle cx="300" cy="300" r="150" fill="none" stroke="#C49A4A" strokeOpacity="0.25" />
+        </svg>
+      </div>
+    </div>
   );
 }
 

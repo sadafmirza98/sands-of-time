@@ -175,7 +175,6 @@ export const wedding: WeddingConfig = {
       actions: {
         maps: "View on Google Maps",
         googleCalendar: "Add to Google Calendar",
-        ics: "Download Calendar Invitation",
         call: "Call the Family",
         whatsapp: "WhatsApp the Family",
       },
