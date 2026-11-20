@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="240" height="320" viewBox="0 0 240 320">
+  <defs>
+    <linearGradient id="b" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#5a3f12"/><stop offset="0.5" stop-color="#F6DB9A"/><stop offset="1" stop-color="#5a3f12"/>
+    </linearGradient>
+    <linearGradient id="s" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FFE7AE"/><stop offset="1" stop-color="#D9A24F"/>
+    </linearGradient>
+    <radialGradient id="h" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#E2BC73" stop-opacity="0.35"/><stop offset="1" stop-color="#E2BC73" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <ellipse cx="120" cy="160" rx="120" ry="160" fill="url(#h)"/>
+  <polygon points="120,48 137.95,69.77 162.86,56.53 171.11,83.5 199.2,80.8 196.5,108.89 223.47,117.14 210.23,142.05 232,160 210.23,177.95 223.47,202.86 196.5,211.11 199.2,239.2 171.11,236.5 162.86,263.47 137.95,250.23 120,272 102.05,250.23 77.14,263.47 68.89,236.5 40.8,239.2 43.5,211.11 16.53,202.86 29.77,177.95 8,160 29.77,142.05 16.53,117.14 43.5,108.89 40.8,80.8 68.89,83.5 77.14,56.53 102.05,69.77" fill="none" stroke="#C49A4A" stroke-opacity="0.35"/>
+  <path d="M74 52 C74 112 112 136 118 160 L122 160 C128 136 166 112 166 52 Z" fill="#ffffff" fill-opacity="0.06" stroke="#F6DB9A" stroke-opacity="0.6"/>
+  <path d="M118 160 C112 184 74 208 74 268 L166 268 C166 208 128 184 122 160 Z" fill="#ffffff" fill-opacity="0.06" stroke="#F6DB9A" stroke-opacity="0.6"/>
+  <path d="M90 100 Q120 108 150 100 C144 124 128 140 120 156 C112 140 96 124 90 100 Z" fill="url(#s)"/>
+  <path d="M76 268 Q120 210 164 268 Z" fill="url(#s)"/>
+  <line x1="120" y1="158" x2="120" y2="236" stroke="#FFE7AE" stroke-width="2" stroke-dasharray="4 6"/>
+  <rect x="58" y="34" width="10" height="252" fill="url(#b)"/>
+  <rect x="172" y="34" width="10" height="252" fill="url(#b)"/>
+  <rect x="40" y="24" width="160" height="18" rx="4" fill="url(#b)"/>
+  <rect x="40" y="278" width="160" height="18" rx="4" fill="url(#b)"/>
+  <rect x="50" y="29" width="140" height="8" rx="2" fill="#258F91"/>
+  <rect x="50" y="283" width="140" height="8" rx="2" fill="#258F91"/>
+</svg>

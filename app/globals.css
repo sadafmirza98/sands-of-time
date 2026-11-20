@@ -1,0 +1,287 @@
+@import "tailwindcss";
+
+/* ── Theme tokens ────────────────────────────────────────────────────────── */
+@theme {
+  --color-midnight: #07152f;
+  --color-navy: #0d2145;
+  --color-royal: #173b69;
+  --color-gold: #c49a4a;
+  --color-gold-bright: #e2bc73;
+  --color-gold-pale: #f6db9a;
+  --color-sand: #d9bd91;
+  --color-parchment: #f3e8d2;
+  --color-ivory: #fff9ed;
+  --color-ink: #241a16;
+  --color-turquoise: #258f91;
+  /* Text-safe variants for use on parchment (WCAG AA). */
+  --color-bronze: #6e4f17;
+  --color-turquoise-deep: #17605f;
+
+  --animate-twinkle: twinkle 4s ease-in-out infinite;
+}
+
+@theme inline {
+  --font-display: var(--font-cinzel), "Cinzel", "Times New Roman", serif;
+  --font-script: var(--font-italianno), "Italianno", cursive;
+  --font-body: var(--font-cormorant), "Cormorant Garamond", Georgia, serif;
+  --font-arabic: var(--font-naskh), "Noto Naskh Arabic", "Geeza Pro", serif;
+}
+
+/* ── Base ───────────────────────────────────────────────────────────────── */
+@layer base {
+  html {
+    background: var(--color-midnight);
+    color-scheme: dark;
+    -webkit-tap-highlight-color: transparent;
+    scroll-padding-top: 4.5rem;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
+  body {
+    background: var(--color-midnight);
+    color: var(--color-parchment);
+    font-family: var(--font-body);
+    font-size: 1.125rem;
+    font-weight: 500;
+    line-height: 1.6;
+    overflow-x: clip;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+  }
+  ::selection {
+    background: color-mix(in oklab, var(--color-gold) 55%, transparent);
+    color: var(--color-ivory);
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-gold-bright);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+  .on-parchment :focus-visible {
+    outline-color: var(--color-navy);
+  }
+  dialog::backdrop {
+    background: rgb(3 8 20 / 0.78);
+    backdrop-filter: blur(4px);
+  }
+}
+
+/* While the opening plays, the page behind it does not scroll. */
+html[data-opening-active] {
+  overflow: hidden;
+}
+/* Returning guests (session) or ?open=1: hide the cover before first paint. */
+html[data-opening="skip"] [data-opening-cover] {
+  display: none !important;
+}
+
+/* ── Materials ──────────────────────────────────────────────────────────── */
+@utility gold-foil {
+  background-image: linear-gradient(
+    100deg,
+    #8a6526 0%,
+    #e2bc73 18%,
+    #fff1c9 32%,
+    #c49a4a 46%,
+    #f6db9a 62%,
+    #a77b2c 80%,
+    #e2bc73 100%
+  );
+  background-size: 220% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+@utility gold-ink {
+  background-image: linear-gradient(100deg, #5a3f12 0%, #8a6526 35%, #6e4f17 60%, #8a6526 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+@utility parchment {
+  background-color: var(--color-parchment);
+  background-image:
+    radial-gradient(120% 90% at 50% 40%, transparent 55%, rgb(150 110 50 / 0.22) 100%),
+    radial-gradient(40% 30% at 18% 12%, rgb(255 255 255 / 0.35), transparent 70%),
+    radial-gradient(35% 25% at 85% 88%, rgb(160 120 60 / 0.16), transparent 70%),
+    url("/textures/parchment-noise.svg");
+  background-size: auto, auto, auto, 280px 280px;
+  color: var(--color-ink);
+}
+
+@utility stone {
+  background-color: var(--color-navy);
+  background-image:
+    radial-gradient(90% 70% at 50% 0%, rgb(23 59 105 / 0.55), transparent 70%),
+    url("/textures/stone-noise.svg");
+  background-size: auto, 320px 320px;
+}
+
+@utility khatam-bg {
+  background-image: url("/textures/khatam-tile.svg");
+  background-size: 72px 72px;
+}
+
+@utility text-glow {
+  text-shadow:
+    0 0 18px rgb(226 188 115 / 0.35),
+    0 2px 18px rgb(3 8 20 / 0.9);
+}
+
+@utility text-shade {
+  text-shadow: 0 1px 12px rgb(3 8 20 / 0.85), 0 0 2px rgb(3 8 20 / 0.6);
+}
+
+/* ── Keyframes & animation classes ──────────────────────────────────────── */
+@keyframes twinkle {
+  0%, 100% { opacity: var(--tw-o, 0.9); }
+  50% { opacity: 0.2; }
+}
+.twinkle { animation: twinkle 4.5s ease-in-out infinite; }
+.twinkle-1 { animation-duration: 3.2s; }
+.twinkle-2 { animation-duration: 6.4s; }
+
+/* Gentle candle glow — smooth easing only (stepped opacity reads as a glitch). */
+@keyframes flicker {
+  0%, 100% { opacity: 1; }
+  30% { opacity: 0.9; }
+  55% { opacity: 0.97; }
+  80% { opacity: 0.88; }
+}
+.flicker { animation: flicker 5.5s ease-in-out infinite; }
+.flicker-slow { animation: breathe-o 6.5s ease-in-out infinite; }
+@keyframes breathe-o {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.86; }
+}
+.breathe { animation: breathe 7s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
+.breathe-slow { animation: breathe-o 9s ease-in-out infinite; }
+@keyframes breathe {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.7; transform: scale(0.96); }
+}
+
+@keyframes sway {
+  0%, 100% { transform: rotate(-1.6deg); }
+  50% { transform: rotate(1.6deg); }
+}
+.lantern-sway { animation: sway 6s ease-in-out infinite; }
+
+@keyframes spin { to { transform: rotate(360deg); } }
+.spin-slow { animation: spin 140s linear infinite; }
+.spin-slower { animation: spin 220s linear infinite; }
+.spin-reverse { animation: spin 180s linear infinite reverse; }
+
+@keyframes sand-stream { to { stroke-dashoffset: -20; } }
+.sand-stream { animation: sand-stream 0.6s linear infinite; }
+.sand-stream-reverse { animation-direction: reverse; }
+
+@keyframes shimmer {
+  0% { background-position: 100% 0; }
+  100% { background-position: -20% 0; }
+}
+.shimmer { animation: shimmer 7s ease-in-out infinite alternate; }
+
+@keyframes camera-drift {
+  0% { transform: scale(1) translate3d(0, 0, 0); }
+  100% { transform: scale(1.055) translate3d(0, -0.8%, 0); }
+}
+.camera-drift { animation: camera-drift 26s ease-in-out infinite alternate; will-change: transform; }
+
+@keyframes sky-shift {
+  0%, 100% { opacity: 0.55; }
+  50% { opacity: 0.9; }
+}
+.sky-shift { animation: sky-shift 18s ease-in-out infinite; }
+
+@keyframes float-y {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+.float-y { animation: float-y 5s ease-in-out infinite; }
+
+@keyframes scroll-cue {
+  0% { transform: scaleY(0); transform-origin: top; }
+  45% { transform: scaleY(1); transform-origin: top; }
+  55% { transform: scaleY(1); transform-origin: bottom; }
+  100% { transform: scaleY(0); transform-origin: bottom; }
+}
+.scroll-cue-line { animation: scroll-cue 2.6s ease-in-out infinite; }
+
+@keyframes menu-in {
+  from { transform: translateX(100%); opacity: 0.4; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+/* Golden ink: each line is "written" left-to-right with a glinting nib. */
+@keyframes ink-write {
+  from { background-position: 100% 0; }
+  to { background-position: 0% 0; }
+}
+.ink-line {
+  display: inline-block;
+  background-image: linear-gradient(90deg, var(--ink, #0d2145) 0 46%, #e2bc73 49%, #fff1c9 50%, transparent 53% 100%);
+  background-size: 240% 100%;
+  background-position: 100% 0;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: ink-write var(--ink-dur, 1.1s) cubic-bezier(0.45, 0.05, 0.3, 1) forwards;
+  animation-delay: var(--ink-delay, 0s);
+}
+
+/* ── Custom cursor ──────────────────────────────────────────────────────── */
+html.sand-cursor,
+html.sand-cursor * {
+  cursor: none !important;
+}
+html.sand-cursor :is(input, textarea, select, [contenteditable="true"]) {
+  cursor: text !important;
+}
+html.sand-cursor .leaflet-container,
+html.sand-cursor .leaflet-container * {
+  cursor: grab !important;
+}
+@media (hover: hover) and (pointer: fine) {
+  html.static-cursor {
+    cursor: url("/cursor/sand-cursor.svg") 12 12, auto;
+  }
+  html.static-cursor :is(a, button, [role="button"]) {
+    cursor: url("/cursor/sand-cursor.svg") 12 12, pointer;
+  }
+}
+
+/* ── Leaflet theming (only loaded with the map) ─────────────────────────── */
+.royal-map .leaflet-tile-pane {
+  filter: sepia(0.35) saturate(0.75) brightness(0.82) contrast(1.06) hue-rotate(-8deg);
+}
+.royal-map .leaflet-control-attribution {
+  background: rgb(7 21 47 / 0.8);
+  color: var(--color-sand);
+  font-family: var(--font-body);
+}
+.royal-map .leaflet-control-attribution a {
+  color: var(--color-gold-bright);
+}
+.royal-map .leaflet-bar a {
+  background: var(--color-navy);
+  color: var(--color-gold-bright);
+  border-color: rgb(196 154 74 / 0.4);
+}
+
+/* ── Reduced motion: stop ambient loops entirely ────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+  .ink-line {
+    background-position: 0% 0;
+  }
+}
