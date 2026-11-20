@@ -119,8 +119,8 @@ export const wedding: WeddingConfig = {
   // Played only when a guest presses play, through YouTube's own (visible) embedded player.
   music: {
     kind: "youtube",
-    videoId: "7oSggsWhwMw",
-    title: "Prince of Persia — Soundtrack",
+    videoId: "0_W7fMSBeJg",
+    title: "Narnia Lullaby",
     volume: 0.45,
   },
 
