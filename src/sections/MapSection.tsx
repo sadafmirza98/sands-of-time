@@ -1,7 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { Compass, MapPin, Navigation, Phone } from "lucide-react";
+import { MapPin, Navigation, Phone } from "lucide-react";
 import { useState } from "react";
 import { wedding } from "@/config/wedding";
 import { archPath, starPoints } from "@/components/artwork/geometry";
@@ -15,7 +15,7 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { telHref } from "@/lib/contacts";
 import { eventFullDate } from "@/lib/dates";
-import { googleDirectionsUrl, googleMapsSearchUrl, hasVerifiedCoordinates, openStreetMapUrl } from "@/lib/maps";
+import { googleDirectionsUrl, googleMapsSearchUrl, hasVerifiedCoordinates } from "@/lib/maps";
 
 const VenueMap = dynamic(() => import("@/components/map/VenueMap"), {
   ssr: false,
@@ -120,9 +120,6 @@ export function MapSection() {
                   </RoyalLink>
                   <RoyalLink href={googleDirectionsUrl} external icon={<Navigation />}>
                     {map.directions}
-                  </RoyalLink>
-                  <RoyalLink href={openStreetMapUrl} external icon={<Compass />}>
-                    {map.explore}
                   </RoyalLink>
                 </div>
               </div>

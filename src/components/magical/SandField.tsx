@@ -159,11 +159,16 @@ export function SandField({ mode = "drift", density = 1.4, max = 180, origin = [
         else if (p.y > h + 12) p.y = -10;
       }
       draw(now);
-      if (visible && !document.hidden) raf = requestAnimationFrame(step);
+      if (visible && !document.hidden && !covered()) raf = requestAnimationFrame(step);
     };
+
+    // Canvases behind the opening overlay pause while it covers the page.
+    const inOverlay = Boolean(canvas.closest('[role="dialog"]'));
+    const covered = () => !inOverlay && document.documentElement.hasAttribute("data-opening-covered");
 
     const start = () => {
       cancelAnimationFrame(raf);
+      if (covered()) return;
       last = performance.now();
       raf = requestAnimationFrame(step);
     };
@@ -192,12 +197,17 @@ export function SandField({ mode = "drift", density = 1.4, max = 180, origin = [
       if (!document.hidden && visible && !reduced) start();
     };
     document.addEventListener("visibilitychange", onVisibility);
+    const mo = new MutationObserver(() => {
+      if (!reduced && visible) start();
+    });
+    if (!inOverlay) mo.observe(document.documentElement, { attributes: true, attributeFilter: ["data-opening-covered"] });
 
     return () => {
       cancelAnimationFrame(raf);
       ro.disconnect();
       io.disconnect();
       document.removeEventListener("visibilitychange", onVisibility);
+      mo.disconnect();
     };
   }, [mode, density, max, ox, oy, speed, reduced]);
 

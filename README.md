@@ -209,7 +209,7 @@ How they were checked (2026-11-20):
 2. OpenStreetMap node **10218172785**, *"Delhi Darbar"*, Swami Vivekanand (S.V.) Road, Jogeshwari West 400102 — the restaurant the address says the venue is **above** (same building, E.E. Heights, 1st floor). The coordinates are that node's.
 3. Google blocks automated reading of the place pin, so the two were compared **visually, not numerically**. If the Google pin sits on a different building, replace the numbers with the pin's own (Google Maps → long-press / right-click the pin → copy the coordinates).
 
-The Leaflet map (lazy, client-only, OSM tiles with a warm restrained filter, custom gold palace pin, tap-to-explore gate on touch devices) appears behind the palace doors. **Get Directions** routes to the coordinates; **Explore Location** opens the OSM pin. Setting `coordinates: null` brings back the address-only fallback card.
+The Leaflet map (lazy, client-only, OSM tiles with a warm restrained filter, custom gold palace pin, tap-to-explore gate on touch devices) appears behind the palace doors. **Get Directions** routes to the coordinates. Setting `coordinates: null` brings back the address-only fallback card.
 
 ## Music
 

@@ -88,7 +88,6 @@ export function OpeningOverlay() {
   const enterWrapRef = useRef<HTMLDivElement | null>(null);
   const timers = useRef<number[]>([]);
   const anims = useRef<Anim[]>([]);
-  const glowLoop = useRef<Anim | null>(null);
   const opened = useRef(false);
 
   const env: EnvelopeMotion = {
@@ -115,12 +114,19 @@ export function OpeningOverlay() {
     anims.current.push(animate(mv, to as number, opts));
   }, []);
 
+  // While the opaque overlay covers the page, the page underneath isn't rendered.
+  useEffect(() => {
+    const root = document.documentElement;
+    if (leaving) root.removeAttribute("data-opening-covered");
+    else root.setAttribute("data-opening-covered", "");
+    return () => root.removeAttribute("data-opening-covered");
+  }, [leaving]);
+
   // Stop everything on unmount.
   useEffect(
     () => () => {
       timers.current.forEach((t) => window.clearTimeout(t));
       anims.current.forEach((a) => a.stop());
-      glowLoop.current?.stop();
       timers.current = [];
       anims.current = [];
     },
@@ -138,12 +144,11 @@ export function OpeningOverlay() {
     later(1100, () => {
       go(env.opacity, 1, { duration: 1, ease: "easeOut" });
       go(env.scale, 1, { duration: 1.3, ease: [0.22, 1, 0.36, 1] });
-      go(letterO, 1, { duration: 1, ease: "easeOut" });
+      // The letter isn't drawn until the seal breaks (it's hidden in the envelope anyway).
     });
     later(2200, () => {
       if (opened.current) return;
-      // The seal breathes with light until the guest touches it.
-      glowLoop.current = animate(env.glow, [0.35, 1, 0.35], { duration: 2.4, repeat: Infinity, ease: "easeInOut" });
+      // The seal then breathes with light (CSS pulse) until the guest touches it.
       playSound("chime");
     });
     return () => local.forEach((t) => window.clearTimeout(t));
@@ -157,8 +162,6 @@ export function OpeningOverlay() {
     opened.current = true;
     // Breaking the seal is the guest's "begin": start the music inside this tap.
     startMusicIfIdle();
-    glowLoop.current?.stop();
-    glowLoop.current = null;
 
     if (reduced) {
       // No motion: show the opened invitation straight away.
@@ -173,6 +176,7 @@ export function OpeningOverlay() {
 
     // Make sure the intro has fully landed if the guest taps early.
     palaceO.set(Math.max(palaceO.get(), 0.9));
+    env.glow.set(0.8);
     env.opacity.set(1);
     env.scale.set(1);
     letterO.set(1);
@@ -338,7 +342,7 @@ export function OpeningOverlay() {
                 <EnvelopeBack m={env} />
                 <EnvelopePocket m={env} />
                 <EnvelopeFlap m={env} behind={reached(Phase.Slide)} />
-                <EnvelopeSeal m={env} monogram={wedding.couple.monogram} />
+                <EnvelopeSeal m={env} monogram={wedding.couple.monogram} pulsing={reached(Phase.Await) && phase < Phase.Break} />
               </>
             )}
 
@@ -355,15 +359,15 @@ export function OpeningOverlay() {
                 >
                   <span aria-hidden className="absolute left-1/2 top-[62%] aspect-square w-[30%] -translate-x-1/2 -translate-y-1/2 rounded-full ring-1 ring-gold-bright/0 transition duration-500 group-hover:scale-110 group-hover:ring-gold-bright/60" />
                 </button>
-                <motion.p
+                <p
                   aria-hidden
-                  className="text-shade pointer-events-none absolute inset-x-0 top-full mt-7 text-center font-display text-[0.68rem] font-semibold uppercase tracking-[0.28em] text-gold-pale sm:text-xs"
-                  initial={{ opacity: 0 }}
-                  animate={reached(Phase.Await) ? { opacity: reduced ? 1 : [0.45, 1, 0.45] } : { opacity: 0 }}
-                  transition={reached(Phase.Await) && !reduced ? { duration: 2.4, repeat: Infinity, ease: "easeInOut" } : { duration: 0.3 }}
+                  className={cx(
+                    "text-shade pointer-events-none absolute inset-x-0 top-full mt-7 text-center font-display text-[0.68rem] font-semibold uppercase tracking-[0.28em] text-gold-pale transition-opacity duration-500 sm:text-xs",
+                    reached(Phase.Await) ? "hint-pulse" : "opacity-0",
+                  )}
                 >
                   {wedding.copy.opening.openHint}
-                </motion.p>
+                </p>
               </div>
             )}
 
@@ -420,7 +424,7 @@ export function OpeningOverlay() {
         <button
           type="button"
           onClick={skip}
-          className="h-10 rounded-full border border-gold/45 bg-midnight/50 px-5 font-display text-[0.7rem] font-semibold uppercase tracking-[0.3em] text-gold-bright backdrop-blur-sm transition hover:border-gold-bright hover:bg-midnight/80"
+          className="h-10 rounded-full border border-gold/45 bg-midnight/80 px-5 font-display text-[0.7rem] font-semibold uppercase tracking-[0.3em] text-gold-bright transition hover:border-gold-bright hover:bg-midnight"
         >
           {wedding.copy.opening.skip}
           <span className="sr-only"> the opening animation</span>

@@ -199,7 +199,6 @@ export const wedding: WeddingConfig = {
       gateHint: "Behind these doors lies the way to the celebration.",
       google: "Google Maps",
       directions: "Get Directions",
-      explore: "Explore Location",
       tapToExplore: "Tap to explore the map",
       unverified:
         "Precise map coordinates for the venue have not been verified yet, so no pin is shown. Use the address search links below — they open the exact address in Google Maps and OpenStreetMap.",

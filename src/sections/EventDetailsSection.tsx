@@ -1,10 +1,9 @@
-import { MapPin } from "lucide-react";
+import { CalendarPlus, MapPin } from "lucide-react";
 import { wedding } from "@/config/wedding";
 import { archPath } from "@/components/artwork/geometry";
 import { CornerOrnament, Flourish, Rule } from "@/components/artwork/Ornaments";
 import { RoyalSeal } from "@/components/artwork/RoyalSeal";
 import { Lantern } from "@/components/artwork/Lantern";
-import { CalendarActions } from "@/components/events/CalendarActions";
 import { ContactActions } from "@/components/events/ContactActions";
 import { PersonBlock } from "@/components/events/Families";
 import { Reveal } from "@/components/ui/Reveal";
@@ -113,7 +112,10 @@ export function EventDetailsSection() {
               <RoyalLink href="#location" variant="parchment" icon={<MapPin />}>
                 {details.actions.maps}
               </RoyalLink>
-              <CalendarActions />
+              {/* Jumps to the calendar section's "Add to Google Calendar" — the one place with the real link */}
+              <RoyalLink href="#add-to-calendar" variant="parchment" icon={<CalendarPlus />}>
+                {details.actions.googleCalendar}
+              </RoyalLink>
               <ContactActions />
             </div>
           </div>

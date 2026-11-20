@@ -25,7 +25,7 @@ export function MusicToggle({ className }: { className?: string }) {
       aria-label={on ? `Pause music: ${wedding.music.title}` : `Play music: ${wedding.music.title}`}
       title={on ? "Pause music" : "Play music"}
       className={cx(
-        "relative inline-flex size-10 items-center justify-center rounded-full border border-gold/40 bg-midnight/40 text-gold-bright backdrop-blur-sm transition hover:border-gold-bright hover:bg-midnight/70",
+        "relative inline-flex size-10 items-center justify-center rounded-full border border-gold/40 bg-midnight/75 text-gold-bright transition hover:border-gold-bright hover:bg-midnight/70",
         on && "border-gold-bright/80 shadow-[0_0_14px_rgb(226_188_115/0.45)]",
         className,
       )}

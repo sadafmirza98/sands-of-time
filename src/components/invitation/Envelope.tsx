@@ -80,7 +80,7 @@ export function EnvelopeFlap({ m, behind }: { m: EnvelopeMotion; behind: boolean
       >
         {/* outside of the flap (seen while closed) */}
         <div className="absolute inset-0 [backface-visibility:hidden]">
-          <svg viewBox="0 0 100 41" preserveAspectRatio="none" className="absolute inset-0 size-full drop-shadow-[0_6px_6px_rgb(60_40_10/0.35)]">
+          <svg viewBox="0 0 100 41" preserveAspectRatio="none" className="absolute inset-0 size-full">
             <defs>
               <linearGradient id="env-flap" x1="0" y1="0" x2="0" y2="1">
                 <stop offset="0" stopColor="#f6ead0" />
@@ -88,6 +88,8 @@ export function EnvelopeFlap({ m, behind }: { m: EnvelopeMotion; behind: boolean
               </linearGradient>
             </defs>
             <path d="M0 0 H100 L50 41 Z" fill="url(#env-flap)" />
+            {/* soft edge shading instead of a drop-shadow filter (filters + 3D flicker on iOS) */}
+            <path d="M0 0 L50 41 L100 0" fill="none" stroke="#8a6a3a" strokeOpacity="0.45" strokeWidth="2.5" vectorEffect="non-scaling-stroke" />
             <path d="M4 2.4 H96 L50 37.6 Z" fill="none" stroke="#C49A4A" strokeWidth="1.3" vectorEffect="non-scaling-stroke" />
             <path d="M8 4.6 H92 L50 34.6 Z" fill="none" stroke="#C49A4A" strokeOpacity="0.5" vectorEffect="non-scaling-stroke" />
           </svg>
@@ -110,7 +112,7 @@ export function EnvelopeFlap({ m, behind }: { m: EnvelopeMotion; behind: boolean
   );
 }
 
-export function EnvelopeSeal({ m, monogram }: { m: EnvelopeMotion; monogram: string }) {
+export function EnvelopeSeal({ m, monogram, pulsing }: { m: EnvelopeMotion; monogram: string; pulsing: boolean }) {
   const leftX = useTransform(m.split, (v) => `${-v * 46}%`);
   const rightX = useTransform(m.split, (v) => `${v * 46}%`);
   const leftR = useTransform(m.split, (v) => -v * 28);
@@ -125,8 +127,10 @@ export function EnvelopeSeal({ m, monogram }: { m: EnvelopeMotion; monogram: str
       style={{ y: m.y, opacity: m.opacity, scale: m.scale, zIndex: 5 }}
     >
       <div className="absolute left-1/2 top-[62%] aspect-square w-[23%] -translate-x-1/2 -translate-y-1/2">
+        {/* waiting: a pure-CSS pulse (GPU); the break flash uses the motion value */}
+        {pulsing && <div className="seal-pulse absolute -inset-[70%] rounded-full bg-[radial-gradient(circle,rgb(255_236_180/0.85),rgb(226_188_115/0.35)_35%,transparent_68%)]" />}
         <motion.div
-          className="absolute -inset-[70%] rounded-full"
+          className="absolute -inset-[70%] rounded-full will-change-[opacity,transform]"
           style={{ opacity: m.glow, scale: glowScale, background: "radial-gradient(circle, rgb(255 236 180 / 0.85), rgb(226 188 115 / 0.35) 35%, transparent 68%)" }}
         />
         <motion.div className="absolute inset-0" style={{ x: leftX, y: halvesY, rotate: leftR, opacity: halvesO }}>

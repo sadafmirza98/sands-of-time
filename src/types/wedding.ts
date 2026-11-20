@@ -206,7 +206,6 @@ export interface CopyConfig {
     gateHint: string;
     google: string;
     directions: string;
-    explore: string;
     tapToExplore: string;
     unverified: string;
   };

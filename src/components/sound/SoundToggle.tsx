@@ -14,7 +14,7 @@ export function SoundToggle({ className }: { className?: string }) {
       aria-label={on ? "Sound effects on. Turn sound off" : "Sound effects off. Turn sound on"}
       title={on ? "Sound on" : "Sound off"}
       className={cx(
-        "group relative inline-flex size-10 items-center justify-center rounded-full border border-gold/40 bg-midnight/40 text-gold-bright backdrop-blur-sm transition hover:border-gold-bright hover:bg-midnight/70",
+        "group relative inline-flex size-10 items-center justify-center rounded-full border border-gold/40 bg-midnight/75 text-gold-bright transition hover:border-gold-bright hover:bg-midnight/70",
         className,
       )}
     >

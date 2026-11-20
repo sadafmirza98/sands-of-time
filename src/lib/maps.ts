@@ -14,8 +14,3 @@ export const googleMapsSearchUrl =
 export const googleDirectionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(
   coordinates ? `${coordinates.lat},${coordinates.lng}` : venueOneLine,
 )}`;
-
-/** OpenStreetMap view of the venue (pin when verified, address search otherwise). */
-export const openStreetMapUrl = coordinates
-  ? `https://www.openstreetmap.org/?mlat=${coordinates.lat}&mlon=${coordinates.lng}#map=18/${coordinates.lat}/${coordinates.lng}`
-  : `https://www.openstreetmap.org/search?query=${encodeURIComponent(venueOneLine)}`;

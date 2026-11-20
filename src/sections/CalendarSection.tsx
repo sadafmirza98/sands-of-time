@@ -131,7 +131,9 @@ export function CalendarSection() {
               <p className="mt-1 text-xl italic text-parchment">
                 {wedding.event.timeDisplay}, {wedding.event.timeZoneLabel}
               </p>
-              <CalendarActions tone="dark" className="mt-6" />
+              <div id="add-to-calendar" className="scroll-mt-[45svh]">
+                <CalendarActions tone="dark" className="mt-6" />
+              </div>
             </div>
           </div>
         </div>
