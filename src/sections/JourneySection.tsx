@@ -2,6 +2,7 @@
 
 import { motion, type MotionValue, useMotionValue, useScroll, useTransform } from "motion/react";
 import { useId, useRef } from "react";
+import type { JourneyCaption } from "@/types/wedding";
 import { wedding } from "@/config/wedding";
 import { CrescentMoon } from "@/components/artwork/CrescentMoon";
 import { archPath, domePath, starPoints } from "@/components/artwork/geometry";
@@ -114,16 +115,18 @@ function GrandGate({ className }: { className?: string }) {
 
 /* ── the scene, driven by a 0→1 progress value ───────────────────────────── */
 
-function Caption({ p, range, text, index }: { p: MotionValue<number>; range: [number, number]; text: string; index: number }) {
+function Caption({ p, range, caption }: { p: MotionValue<number>; range: [number, number]; caption: JourneyCaption }) {
   const [a, b] = range;
   const opacity = useTransform(p, [a, a + 0.05, b - 0.05, b], [0, 1, 1, 0]);
   const y = useTransform(p, [a, b], [24, -24]);
   return (
     <motion.p style={{ opacity, y }} className="text-shade absolute inset-x-0 top-[15%] mx-auto max-w-xl rounded-full bg-[radial-gradient(closest-side,rgb(3_8_20/0.65),transparent)] px-8 py-6 text-center text-[1.45rem] italic leading-snug text-parchment sm:top-[16%] sm:text-[1.9rem]">
-      <span aria-hidden className="mb-3 block font-display text-[0.65rem] not-italic tracking-[0.5em] text-gold">
-        {["I", "II", "III", "IV", "V", "VI"][index]}
-      </span>
-      {text}
+      {caption.label && (
+        <span className="mb-3 block font-display text-[0.62rem] font-semibold not-italic uppercase tracking-[0.32em] text-gold-bright sm:text-xs sm:tracking-[0.4em]">
+          {caption.label}
+        </span>
+      )}
+      {caption.text}
     </motion.p>
   );
 }
@@ -226,8 +229,8 @@ function Scene({ p, interactive }: { p: MotionValue<number>; interactive: boolea
 
       {interactive && (
         <motion.div style={{ opacity: captionsO }} className="absolute inset-0">
-          {journey.captions.map((text, i) => (
-            <Caption key={i} p={p} index={i} text={text} range={[i * span + 0.01, (i + 1) * span + 0.02]} />
+          {journey.captions.map((caption, i) => (
+            <Caption key={i} p={p} caption={caption} range={[i * span + 0.01, (i + 1) * span + 0.02]} />
           ))}
         </motion.div>
       )}
@@ -257,9 +260,12 @@ export function JourneySection() {
           <div className="relative h-[85svh] min-h-[560px]">
             <Scene p={still} interactive={false} />
           </div>
-          <ol className="mx-auto max-w-xl space-y-4 px-6 py-12 text-center text-xl italic text-parchment">
-            {journey.captions.map((c) => (
-              <li key={c}>{c}</li>
+          <ol className="mx-auto max-w-xl space-y-6 px-6 py-12 text-center text-xl italic text-parchment">
+            {journey.captions.map((c, i) => (
+              <li key={i}>
+                {c.label && <span className="mb-1 block font-display text-xs font-semibold not-italic uppercase tracking-[0.3em] text-gold-bright">{c.label}</span>}
+                {c.text}
+              </li>
             ))}
           </ol>
         </div>
@@ -270,8 +276,8 @@ export function JourneySection() {
           </div>
           {/* Captions for assistive tech, in reading order */}
           <ol className="sr-only">
-            {journey.captions.map((c) => (
-              <li key={c}>{c}</li>
+            {journey.captions.map((c, i) => (
+              <li key={i}>{c.label ? `${c.label}: ${c.text}` : c.text}</li>
             ))}
           </ol>
         </div>

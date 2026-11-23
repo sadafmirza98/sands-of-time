@@ -99,6 +99,12 @@ export interface CalendarMark {
   label: string | null;
 }
 
+/** A journey caption; `label` (e.g. "20 November 2026 · The Engagement") shows above the line in gold. */
+export interface JourneyCaption {
+  label: string | null;
+  text: string;
+}
+
 export interface StoryChapter {
   /** e.g. "I", "II" */
   numeral: string;
@@ -174,7 +180,8 @@ export interface CopyConfig {
   journey: {
     eyebrow: string;
     title: string;
-    captions: string[];
+    /** One caption per stage of the walk (the opening, then each gate, in order). */
+    captions: JourneyCaption[];
     ticketHeading: string;
   };
   details: {

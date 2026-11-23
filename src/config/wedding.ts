@@ -98,32 +98,7 @@ export const wedding: WeddingConfig = {
   // Outlined star on the calendar. Add a label (e.g. what happens that day) for screen readers.
   calendarMarks: [{ date: "2026-12-17", label: "Nikah & Reception" }],
 
-  story: [
-    {
-      numeral: "I",
-      title: "The Engagement",
-      date: "20 November 2026",
-      image: null,
-      body: ["With the blessings of Allah and the duas of our families, we said yes to a lifetime together — the very first page of our story."],
-      link: null,
-    },
-    {
-      numeral: "II",
-      title: "Nikah & Reception",
-      date: "17 December 2026",
-      image: null,
-      body: ["With the blessings of Allah and the duas of our families, we say “Qubool hai” and begin our life together at our Nikah and Reception."],
-      link: null,
-    },
-    {
-      numeral: "III",
-      title: "Dawat e Walima",
-      date: "19 December 2026",
-      image: null,
-      body: ["Two days later, we gather once more for our Dawat e Walima at The Grand FM Banquet, Jogeshwari West — and your presence would make our joy complete."],
-      link: null,
-    },
-  ],
+  story: [],
 
   rsvp: {
     enabled: false,
@@ -183,11 +158,21 @@ export const wedding: WeddingConfig = {
     journey: {
       eyebrow: "The Journey",
       title: "Through the Sands of Time",
+      // The opening, then one caption as you pass through each gate.
       captions: [
-        "Beyond the last dune, the old road begins to glow.",
-        "Ancient gates rise from the sand to mark the way.",
-        "Here the sands of time flow against the wind.",
-        "And at the end of the path, the palace awaits.",
+        { label: null, text: "Beyond the last dune, the old road begins to glow." },
+        {
+          label: "20 November 2026 · The Engagement",
+          text: "With the blessings of Allah and the duas of our families, we said yes to a lifetime together.",
+        },
+        {
+          label: "17 December 2026 · Nikah & Reception",
+          text: "We say “Qubool hai” and begin our life together.",
+        },
+        {
+          label: "19 December 2026 · Dawat e Walima",
+          text: "And at the end of the path, the palace awaits — join us for our Dawat e Walima.",
+        },
       ],
       ticketHeading: "The Royal Celebration",
     },
