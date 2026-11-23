@@ -96,9 +96,34 @@ export const wedding: WeddingConfig = {
   },
 
   // Outlined star on the calendar. Add a label (e.g. what happens that day) for screen readers.
-  calendarMarks: [{ date: "2026-12-17", label: null }],
+  calendarMarks: [{ date: "2026-12-17", label: "Nikah & Reception" }],
 
-  story: [],
+  story: [
+    {
+      numeral: "I",
+      title: "The Engagement",
+      date: "20 November 2026",
+      image: null,
+      body: ["With the blessings of Allah and the duas of our families, we said yes to a lifetime together — the very first page of our story."],
+      link: null,
+    },
+    {
+      numeral: "II",
+      title: "Nikah & Reception",
+      date: "17 December 2026",
+      image: null,
+      body: ["With the blessings of Allah and the duas of our families, we say “Qubool hai” and begin our life together at our Nikah and Reception."],
+      link: null,
+    },
+    {
+      numeral: "III",
+      title: "Dawat e Walima",
+      date: "19 December 2026",
+      image: null,
+      body: ["Two days later, we gather once more for our Dawat e Walima at The Grand FM Banquet, Jogeshwari West — and your presence would make our joy complete."],
+      link: null,
+    },
+  ],
 
   rsvp: {
     enabled: false,
@@ -119,12 +144,12 @@ export const wedding: WeddingConfig = {
   // Played only when a guest presses play, through YouTube's own (visible) embedded player.
   music: {
     kind: "youtube",
-    videoId: "0_W7fMSBeJg",
-    title: "Narnia Lullaby",
+    videoId: "GL4LvIZzMig",
+    title: "Love Story (Arabic Oud)",
     volume: 0.45,
   },
 
-  developerCredit: "Sadaf Mirza",
+  developerCredit: "Tahir Mirza",
 
   site: {
     url: null,
