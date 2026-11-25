@@ -162,10 +162,6 @@ export const wedding: WeddingConfig = {
       captions: [
         { label: null, text: "Beyond the last dune, the old road begins to glow." },
         {
-          label: "20 November 2026 · The Engagement",
-          text: "With the blessings of Allah and the duas of our families, we said yes to a lifetime together.",
-        },
-        {
           label: "17 December 2026 · Nikah & Reception",
           text: "We say “Qubool hai” and begin our life together.",
         },

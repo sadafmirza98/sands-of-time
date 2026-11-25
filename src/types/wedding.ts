@@ -99,7 +99,7 @@ export interface CalendarMark {
   label: string | null;
 }
 
-/** A journey caption; `label` (e.g. "20 November 2026 · The Engagement") shows above the line in gold. */
+/** A journey caption; `label` (e.g. "17 December 2026 · Nikah & Reception") shows above the line in gold. */
 export interface JourneyCaption {
   label: string | null;
   text: string;
